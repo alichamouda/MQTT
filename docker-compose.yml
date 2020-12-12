@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+  smart-meter:
+    image: sm-mqtt
+    networks:
+      - mqtt-network
+    depends_on:
+     - mqtt-broker
+  mdms:
+    image: mdms-mqtt
+    networks:
+      - mqtt-network
+    depends_on:
+      - mqtt-broker
+
+  mqtt-broker:
+    image: eclipse-mosquitto:latest
+    networks:
+      - mqtt-network
+    volumes: 
+      - mqtt-broker-data:/mosquitto/data
+
+volumes:
+    mqtt-broker-data:
+
+networks:
+  mqtt-network:
+    name: mqtt-network
+    driver: overlay
